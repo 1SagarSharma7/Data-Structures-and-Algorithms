@@ -44,7 +44,6 @@ int main(){
 
     char a;
     cin >> a;
-	cout << a << endl;
 	
     // Check at what ascii spectrum it comes under using if statements and print accordingly
 
