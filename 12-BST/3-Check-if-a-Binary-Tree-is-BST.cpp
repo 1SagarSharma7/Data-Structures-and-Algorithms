@@ -1,3 +1,33 @@
+/*
+
+3-Check-if-a-Binary-Tree-is-BST
+
+Given a binary tree with N number of nodes, check if that input tree is BST (Binary Search Tree). If yes, return true, return false otherwise.
+Note: Duplicate elements should be kept in the right subtree.
+
+Input format :
+The first line of input contains data of the nodes of the tree in level order form. The data of the nodes of the tree is separated by space. If any node does not have a left or right child, take -1 in its place. Since -1 is used as an indication whether the left or right nodes exist, therefore, it will not be a part of the data of any node.
+
+Output format :
+The first and only line of output contains either true or false.
+
+Constraints :
+Time Limit: 1 second
+
+Sample Input 1 :
+3 1 5 -1 2 -1 -1 -1 -1
+
+Sample Output 1 :
+true
+
+Sample Input 2 :
+5 2 10 0 1 -1 15 -1 -1 -1 -1 -1 -1
+
+Sample Output 2 :
+false
+
+*/
+
 
 #include <iostream>
 #include <queue>
@@ -25,10 +55,76 @@ class BinaryTreeNode{
 	
 };
 
+bool isBSTAlternativeHelper(BinaryTreeNode<int>* root ,int minima, int maxima){
+	// base case
+	if(root == NULL){
+		return true;
+	}
+	
+	// scal case
+	if(root -> data < minima || root -> data > maxima){
+		return false;
+	}
+	
+	// recur case
+	bool leftCheck = isBSTAlternativeHelper(root -> left, minima, root -> data);
+	bool rightCheck = isBSTAlternativeHelper(root -> right, root -> data , maxima);
+	
+	return leftCheck && rightCheck;
+	
+}
 
+bool isBSTAlternative(BinaryTreeNode<int>* root){
+	return isBSTAlternativeHelper(root , INT_MIN, INT_MAX);
+}
 
 
 // call the function
+bool isBST(BinaryTreeNode<int> *root){
+	// base case
+	if(root -> left == NULL && root -> right == NULL){
+		return true;
+	}
+	
+	else if(root -> left == NULL && root -> right != NULL){
+		bool b1 = isBST(root -> right);
+		if(root -> right -> data > root -> data){
+			return b1 && true;
+		}
+		else{
+			return b1 && false;
+		}
+	}
+	else if(root -> left != NULL && root -> right == NULL){
+			bool b2 = isBST(root -> left);
+		if(root -> left -> data < root -> data){
+			return b2 && true;
+		}
+		else{
+			return b2 && false;
+		}
+	}
+	
+	else if(root -> left != NULL && root -> right != NULL ){
+	
+	// recur case
+	bool leftCheck = isBST(root -> left);
+	bool rightCheck = isBST(root -> right);
+	
+	// scal case
+	bool rootCheck;
+	if(root -> left -> data < root -> data < root -> right -> data){
+		rootCheck = true;
+	}
+	else{
+		rootCheck = false;
+	}
+	
+	
+	return leftCheck && rootCheck && rightCheck;
+	
+	}
+}
 
 
 // print the binary tree
@@ -165,6 +261,13 @@ int main(){
 	
 	
 	// function
-	//function();
+	bool print = isBSTAlternative(root);
+	
+	if(print){
+		cout << "true" << endl;
+	}
+	else {
+		cout << "false" << endl;
+	}
 	
 }
